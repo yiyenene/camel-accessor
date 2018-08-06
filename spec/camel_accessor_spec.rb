@@ -6,6 +6,11 @@ class Book < ActiveRecord::Base
   camel_accessor_to(:random_code)
 end
 
+class Drink < ActiveRecord::Base
+  camel_lower_letter
+  camel_accessor
+end
+
 RSpec.describe CamelAccessor do
   it "has a version number" do
     expect(CamelAccessor::VERSION).not_to be nil
@@ -13,12 +18,12 @@ RSpec.describe CamelAccessor do
 
   describe ".camel_accessor" do
     let(:user) { User.create(value2: 100) }
-    it "setter pass to snake_case setter" do
+    it "writer pass to snake_case writer" do
       user.TestValue = "test"
       expect(user.test_value).to eq("test")
     end
 
-    it "getter read from snake_case getter" do
+    it "reader read from snake_case reader" do
       expect(user.Value2).to eq(100)
     end
   end
@@ -32,6 +37,19 @@ RSpec.describe CamelAccessor do
 
     it "accessor not defined with other attribute" do
       expect { book.RegistrationNumber }.to raise_error(NoMethodError)
+    end
+  end
+
+  describe ".camel_lower_letter" do
+    let(:drink) { Drink.create(type_id: "abc") }
+
+    it "reader read from snake_case reader" do
+      expect(drink.typeId).to eq("abc")
+    end
+
+    it "writer pass to snake_case writer" do
+      drink.typeId = "def"
+      expect(drink.type_id).to eq("def")
     end
   end
 end

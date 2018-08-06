@@ -7,7 +7,7 @@ module CamelAccessor
 
     included do
       class << self
-        attr_accessor :camel_accessor_targets
+        attr_internal :camel_accessor_targets, :first_letter
       end
     end
 
@@ -21,9 +21,13 @@ module CamelAccessor
         self.camel_accessor_targets += Set.new(props.flat_map { |x| to_camel(x) })
       end
 
+      def camel_lower_letter
+        self.first_letter = :lower
+      end
+
       def to_camel(prop)
-        # TODO: support lower camel
-        camelized = prop.to_s.camelize
+        letter = first_letter || :upper
+        camelized = prop.to_s.camelize(letter)
         [:"#{camelized}"]
       end
 

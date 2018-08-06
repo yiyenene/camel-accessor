@@ -14,6 +14,10 @@ class CreateAllTables < ActiveRecord::Migration
       t.string :random_code
       t.string :registration_number
     end
+
+    create_table(:drinks) do |t|
+      t.string :type_id
+    end
   end
 end
 
